@@ -1,1 +1,56 @@
 /* You can add global styles to this file, and also import other style files */
+
+@font-face {
+    font-family: "Helvetice-Neue-light";
+    src: url("assets/fonts/HelveticaNeue-Light.ttf") format("truetype");
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Helvetice-Neue-bold";
+    src: url("assets/fonts/HelveticaNeue-Bold.ttf") format("truetype");
+    font-style: normal;
+    font-weight: bold;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Helvetice-Neue-italic";
+    src: url("assets/fonts/HelveticaNeue-Italic.ttf") format("truetype");
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Helvetice-Neue-medium";
+    src: url("assets/fonts/HelveticaNeue-Medium.ttf") format("truetype");
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Helvetice-Neue-thin";
+    src: url("assets/fonts/HelveticaNeue-Thin.ttf") format("truetype");
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+}
+
+.card {
+    box-shadow: 0px 3px 6px #00000029;
+    background-color: white;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-top: 10px;
+}

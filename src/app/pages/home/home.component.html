@@ -1,0 +1,78 @@
+<div class="container">
+    <img src="assets/images/Logo.png" alt="" height="40">
+    <div class="header-right">
+        <div 
+            #searchBoxRef
+            class="search-box"
+        >
+            <input type="text" placeholder="What are you looking for?">
+            <img src="assets/images/Search.svg" alt="" class="svg">
+        </div>
+        <img 
+            #searchIconRef 
+            src="assets/images/Search.svg" 
+            alt="" 
+            class="svg" 
+            (mouseover)="
+                searchBoxRef.style.display = 'block'; 
+                searchIconRef.style.display = 'none'
+            "
+        >
+        <span class="svg" style="position: relative;" [ngStyle]="{
+            'margin-left': searchBoxRef.style.display === 'block' ? '20px' : '30px'
+        }">
+            <img src="assets/images/Circle.svg" alt="" class="circle">
+            <img src="assets/images/Add.svg" alt="" class="plus">
+        </span>
+        
+        <img src="assets/images/Bitmap.png" alt="" class="svg avatar"> 
+    </div>
+</div> 
+<div 
+    #quoteRef
+    class="container quote" 
+    [style.justify-content]="removeIconRef.style.display === 'block' ? 'space-between' : 'flex-start'"
+    (mouseover)="removeIconRef.style.display = 'block'"
+>
+    <q>Anything that can go wrong, will go wrong!</q>
+    <img 
+        #removeIconRef 
+        src="assets/images/RemoveQuote.svg" 
+        alt="" 
+        height="10"
+        (click)="quoteRef.style.display = 'none'"
+    >
+</div>
+<div class="container content">
+    <div class="grid">
+        <div class="card action">
+            <img src="assets/images/ToDoIcon.svg" alt="">
+            <span>To Do</span>
+        </div>
+        <div class="card action">
+            <img src="assets/images/DoingIcon.svg" alt="">
+            <span>Doing</span>
+        </div>
+        <div class="card action">
+            <img src="assets/images/DoneIcon.svg" alt="">
+            <span>Done</span>
+        </div>
+    </div>
+    <div class="grid">
+        <div>
+            <ng-container *ngFor="let task of tasks">
+                <app-card *ngIf="task.stage === 0" [task]="task"></app-card>
+            </ng-container>
+        </div>
+        <div>
+            <ng-container *ngFor="let task of tasks">
+                <app-card *ngIf="task.stage === 1" [task]="task"></app-card>
+            </ng-container>
+        </div>
+        <div>
+            <ng-container *ngFor="let task of tasks">
+                <app-card *ngIf="task.stage === 2" [task]="task"></app-card>
+            </ng-container>
+        </div>
+    </div>
+</div>

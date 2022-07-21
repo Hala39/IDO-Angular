@@ -1,0 +1,40 @@
+<div class="card" *ngIf="task">
+    <div class="title">{{ task.title }}</div>
+    <table>
+        <tr>
+            <td>Category</td>
+            <td>{{ task.category }}</td>
+        </tr>
+        <tr>
+            <td>Due Date</td>
+            <td>{{ task.dueDate | date:'shortDate' }}</td>
+        </tr>
+        <tr>
+            <td>Estimate</td>
+            <td>{{ task.estimate }}</td>
+        </tr>
+        <tr>
+            <td>Importance</td>
+            <td>
+                <select 
+                    [ngClass]="{
+                        badge: true,
+                        low: task.importance === 0,
+                        medium: task.importance === 1,
+                        high: task.importance === 2
+                    }"
+                    (change)="changePriority($event)"
+                >
+                    <option 
+                        *ngFor="let option of keys(); let i = index;" 
+                        [selected]="task.importance === i"
+                        [value]="i"
+                        (click)="task.importance = i"
+                    >
+                        {{ option | titlecase }}
+                    </option>
+                </select>
+            </td>
+        </tr>
+    </table>
+</div>

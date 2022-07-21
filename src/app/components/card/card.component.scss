@@ -1,0 +1,52 @@
+.title {
+    color: #212529;
+    font-family: "Helvetice-Neue-medium";
+    font-size: 16px;
+    margin-bottom: 24px;
+}
+
+td {
+    padding-bottom: 10px;
+    font-size: 14px;
+}
+
+td:nth-child(odd) {
+    padding-right: 50px;
+    color: #6C757D;
+    font-family: "Helvetice-Neue-thin";
+}
+
+td:nth-child(even) {
+    font-family: "Helvetice-Neue-light";
+}
+
+.badge {
+    text-align: center;
+    border-radius: 4px;
+    border: none;
+    font-size: 13px;
+    padding: 5px 0px;
+    font-family: "Helvetice-Neue-light";
+    color: white;
+
+    &.high {
+        background-color: #DC3545;
+    }
+    
+    &.medium {
+        background-color: #FE913E;
+    }
+    
+    &.low {
+        background-color: #39AC95;
+    }
+
+    option {
+        background-color: white;
+        color: black;
+    }
+
+    &:focus, :active {
+        outline: none;
+    }
+}
