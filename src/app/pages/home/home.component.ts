@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Task } from 'src/app/entities/task';
 import { AuthService } from 'src/app/services/auth.service';
@@ -23,98 +24,107 @@ export class HomeComponent implements OnInit {
   @ViewChild('overlayRef') overlayRef!: ElementRef<HTMLDivElement>;
 
   overlay = false;
+  searchKey: string = '';
+  results: Task[] = [];
 
   tasks: Task[] = [
     {
-      title: 'A title',
+      title: 'First Task',
       dueDate: new Date(),
       estimate: '3 hours',
       date: new Date(2020, 5, 6),
       category: 'Work',
-      stage: 1,
+      status: 1,
       importance: 2
     },
     {
-      title: 'A title',
+      title: 'Second Task',
       dueDate: new Date(),
       estimate: '3 hours',
       date: new Date(2020, 5, 6),
       category: 'Work',
-      stage: 1,
+      status: 1,
       importance: 1
     },
     {
-      title: 'A title',
+      title: 'Third Task',
       dueDate: new Date(),
       estimate: '3 hours',
       date: new Date(2020, 5, 6),
       category: 'Work',
-      stage: 1,
+      status: 1,
       importance: 1
     },
     {
-      title: 'A title',
+      title: 'Fourth Task',
       dueDate: new Date(),
       estimate: '3 hours',
       date: new Date(2020, 5, 6),
       category: 'Work',
-      stage: 2,
+      status: 2,
       importance: 1
     },
     {
-      title: 'A title',
+      title: 'Fifth Task',
       dueDate: new Date(),
       estimate: '3 hours',
       date: new Date(2020, 5, 6),
       category: 'Work',
-      stage: 0,
+      status: 0,
       importance: 2
     },
     {
-      title: 'A title',
+      title: 'Sixth Task',
       dueDate: new Date(),
       estimate: '3 hours',
       date: new Date(2020, 5, 6),
       category: 'Work',
-      stage: 0,
+      status: 0,
       importance: 0
     },
     {
-      title: 'A title',
+      title: 'Seventh Task',
       dueDate: new Date(),
       estimate: '3 hours',
       date: new Date(2020, 5, 6),
       category: 'Work',
-      stage: 0,
+      status: 0,
       importance: 1
     },
   ]
+
+  toDos = this.tasks.filter(t => t.status === 0);
+  doings = this.tasks.filter(t => t.status === 1);
+  dones = this.tasks.filter(t => t.status === 2);
 
   logout() {
     this.authService.logout();
   }
 
+  search() {
+    if (this.searchKey.length > 0)
+      this.results = this.tasks.filter(t => t.title.toLowerCase().includes(this.searchKey.toLowerCase()));
+    else this.results = [];
+  }
+
   @HostListener('document:mouseover', ['$event']) 
   hideSearchBox($event: any) {
-    if (!this.searchBoxRef.nativeElement.contains($event.target) 
-      && !this.searchIconRef.nativeElement.contains($event.target)) {
-      this.searchBoxRef.nativeElement.style.display = 'none';
-      this.searchIconRef.nativeElement.style.display = 'block';
-    }
-
     if (!this.quoteRef.nativeElement.contains($event.target)) {
       this.removeIconRef.nativeElement.style.display = 'none';
     }
   }
 
-  @HostListener('document:click', ['$event'])
-  hideOverlay($event: any) {
-    if (
-        this.overlay 
-        && !this.overlayRef.nativeElement.contains($event.target)
-        && !$event.target.classList.contains('avatar')
-        ) {
-      this.overlay = false;
+  drop(event: CdkDragDrop<Task[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
     }
   }
+
 }

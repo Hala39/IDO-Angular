@@ -3,6 +3,20 @@
     font-family: "Helvetice-Neue-medium";
     font-size: 16px;
     margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    cursor: text;
+}
+
+input {
+    @extend .title;
+    margin-bottom: 0px;
+    width: 100%;
+    border: none;
+
+    &:focus {
+        outline: none;
+    }
 }
 
 td {
@@ -25,7 +39,7 @@ td:nth-child(even) {
     border-radius: 4px;
     border: none;
     font-size: 13px;
-    padding: 5px 0px;
+    padding: 7px;
     font-family: "Helvetice-Neue-light";
     color: white;
 
@@ -40,13 +54,8 @@ td:nth-child(even) {
     &.low {
         background-color: #39AC95;
     }
+}
 
-    option {
-        background-color: white;
-        color: black;
-    }
-
-    &:focus, :active {
-        outline: none;
-    }
+.highlited {
+    background-color: #fedb3e;
 }

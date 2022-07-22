@@ -1,5 +1,5 @@
 import { Importance } from "./importance";
-import { Stage } from "./stage";
+import { Status } from "./stage";
 
 export class Task {
     title: string = '';
@@ -7,6 +7,6 @@ export class Task {
     dueDate?: Date = new Date();
     estimate: string = '';
     importance: Importance = Importance.low;
-    stage: Stage = Stage.toDo;
+    status: Status = Status.toDo;
     date?: Date = new Date();
 }

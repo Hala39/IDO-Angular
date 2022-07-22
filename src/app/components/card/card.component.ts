@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { Importance } from 'src/app/entities/importance';
 import { Task } from 'src/app/entities/task';
 
@@ -15,15 +15,27 @@ export class CardComponent implements OnInit {
   }
 
   @Input('task') task: Task | null = null;
+  @Input('highlited') highlited: boolean = false;
+
+  @ViewChild('host') host!: ElementRef<HTMLDivElement>;
+  @ViewChild('titleRef') titleRef!: ElementRef<HTMLDivElement>;
 
   importance = Importance;
+  editMode = false;
 
-  keys() : string[] {
-    var keys = Object.keys(this.importance);
-    return keys.slice(keys.length / 2);
+  save() {
+    this.editMode = false;
   }
 
   changePriority($event: any) {
 
   }
+
+  @HostListener('document:click', ['$event'])
+  escapeEditMode($event: any) {
+    if (!this.titleRef.nativeElement.contains($event.target)) {
+      this.editMode = false;
+    }
+  }
+
 }

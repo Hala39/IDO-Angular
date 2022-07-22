@@ -1,5 +1,29 @@
-<div class="card" *ngIf="task">
-    <div class="title">{{ task.title }}</div>
+<div class="card" #host *ngIf="task">
+    <div 
+        #titleRef
+        class="title"
+        (click)="editMode = true"
+    >
+        <span 
+            *ngIf="!editMode"
+            [class.highlited]="highlited"
+        >
+            {{ task.title }}
+        </span>
+        <input 
+            *ngIf="editMode" 
+            type="text"
+            [value]="task.title"
+            autofocus
+        >
+        <button 
+            *ngIf="editMode" 
+            (click)="save()"
+        >
+            Save
+        </button>
+        <ng-content></ng-content>
+    </div>
     <table>
         <tr>
             <td>Category</td>
@@ -16,7 +40,7 @@
         <tr>
             <td>Importance</td>
             <td>
-                <select 
+                <div 
                     [ngClass]="{
                         badge: true,
                         low: task.importance === 0,
@@ -25,15 +49,8 @@
                     }"
                     (change)="changePriority($event)"
                 >
-                    <option 
-                        *ngFor="let option of keys(); let i = index;" 
-                        [selected]="task.importance === i"
-                        [value]="i"
-                        (click)="task.importance = i"
-                    >
-                        {{ option | titlecase }}
-                    </option>
-                </select>
+                    {{ importance[task.importance] | titlecase }}
+                </div>
             </td>
         </tr>
     </table>
