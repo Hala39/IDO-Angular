@@ -70,13 +70,14 @@ input {
 .btn {
     width: 100%;
     margin-top: 30px;
-    font-family: "Helvetice-Neue-light";
     border-radius: 30px;
     border: none;
     height: 25px;
     font-weight: bold;
     font-size: 18px;
     background-color: #B6A3C2;
+    color: #403564;
+    font-family: "Helvetice-Neue-bold";
     cursor: pointer;
 
     &:disabled {

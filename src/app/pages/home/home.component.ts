@@ -19,6 +19,10 @@ export class HomeComponent implements OnInit {
   @ViewChild('quoteRef') quoteRef!: ElementRef<HTMLDivElement>;
   @ViewChild('removeIconRef') removeIconRef!: ElementRef<HTMLImageElement>;
 
+  @ViewChild('overlayRef') overlayRef!: ElementRef<HTMLDivElement>;
+
+  overlay = false;
+
   tasks: Task[] = [
     {
       title: 'A title',
@@ -95,6 +99,17 @@ export class HomeComponent implements OnInit {
 
     if (!this.quoteRef.nativeElement.contains($event.target)) {
       this.removeIconRef.nativeElement.style.display = 'none';
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  hideOverlay($event: any) {
+    if (
+        this.overlay 
+        && !this.overlayRef.nativeElement.contains($event.target)
+        && !$event.target.classList.contains('avatar')
+        ) {
+      this.overlay = false;
     }
   }
 }

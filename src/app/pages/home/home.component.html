@@ -1,37 +1,75 @@
 <div class="container">
-    <img src="assets/images/Logo.png" alt="" height="40">
+    <img src="assets/images/Logo.png" alt="" height="45">
     <div class="header-right">
         <div 
             #searchBoxRef
             class="search-box"
+            tabindex="0"
+            (focus)="searchInputRef.focus()"
         >
-            <input type="text" placeholder="What are you looking for?">
+            <input #searchInputRef type="text" placeholder="What are you looking for?">
             <img src="assets/images/Search.svg" alt="" class="svg">
         </div>
         <img 
             #searchIconRef 
             src="assets/images/Search.svg" 
             alt="" 
-            class="svg" 
+            class="svg"
             (mouseover)="
                 searchBoxRef.style.display = 'block'; 
-                searchIconRef.style.display = 'none'
+                searchIconRef.style.display = 'none';
             "
         >
-        <span class="svg" style="position: relative;" [ngStyle]="{
-            'margin-left': searchBoxRef.style.display === 'block' ? '20px' : '30px'
-        }">
+        <span 
+            tooltip="Add item"
+            class="svg" 
+            style="position: relative;" 
+            [ngStyle]="{
+                'margin-left': searchBoxRef.style.display === 'block' ? '20px' : '30px'
+            }"
+        >
             <img src="assets/images/Circle.svg" alt="" class="circle">
             <img src="assets/images/Add.svg" alt="" class="plus">
         </span>
         
-        <img src="assets/images/Bitmap.png" alt="" class="svg avatar"> 
+        <span 
+            class="svg" 
+            style="position: relative; height: max-content;" 
+        >
+            <img 
+                src="assets/images/Bitmap.png" 
+                alt="" 
+                class="avatar" 
+                (click)="overlay = true"
+            >
+            <div 
+                *ngIf="overlay"
+                #overlayRef 
+                class="overlay"
+            >
+                <img src="assets/images/Bitmap.png" class="avatar" alt="">
+                <div>
+                    <div class="email">
+                        user@example.com
+                    </div>
+                    <div class="logout">
+                        Log Out
+                        <img src="assets/images/Logout.svg" alt="">
+                    </div>
+                </div>
+            </div> 
+        </span>
+        
     </div>
 </div> 
 <div 
     #quoteRef
     class="container quote" 
-    [style.justify-content]="removeIconRef.style.display === 'block' ? 'space-between' : 'flex-start'"
+    [style.justify-content]="
+        removeIconRef.style.display === 'block' ? 
+        'space-between' : 
+        'flex-start'
+        "
     (mouseover)="removeIconRef.style.display = 'block'"
 >
     <q>Anything that can go wrong, will go wrong!</q>
