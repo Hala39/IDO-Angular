@@ -1,5 +1,6 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Task } from 'src/app/entities/task';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +9,7 @@ import { Task } from 'src/app/entities/task';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
   }
@@ -88,6 +89,10 @@ export class HomeComponent implements OnInit {
       importance: 1
     },
   ]
+
+  logout() {
+    this.authService.logout();
+  }
 
   @HostListener('document:mouseover', ['$event']) 
   hideSearchBox($event: any) {
