@@ -23,6 +23,7 @@
             tooltip="Add item"
             class="svg" 
             style="position: relative;" 
+            (click)="sidebarRef.open()"
         >
             <img src="assets/images/Circle.svg" alt="" class="circle">
             <img src="assets/images/Add.svg" alt="" class="plus">
@@ -78,15 +79,15 @@
     <div class="grid">
         <div class="card action">
             <img src="assets/images/ToDoIcon.svg" alt="">
-            <span>To Do</span>
+            <h2>To Do</h2>
         </div>
         <div class="card action">
             <img src="assets/images/DoingIcon.svg" alt="">
-            <span>Doing</span>
+            <h2>Doing</h2>
         </div>
         <div class="card action">
             <img src="assets/images/DoneIcon.svg" alt="">
-            <span>Done</span>
+            <h2>Done</h2>
         </div>
     </div>
     <div 
@@ -145,3 +146,5 @@
         </div>
     </div>
 </div>
+
+<app-sidebar #sidebarRef></app-sidebar>

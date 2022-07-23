@@ -1,0 +1,47 @@
+<div 
+    @sidebar
+    #sidebarRef
+    *ngIf="visible"
+    class="sidebar"
+  >
+    <div class="sidebar-content">
+        <span class="primary close" (click)="close()">
+            &#10006;
+        </span>
+        <h2 class="primary">Add a Task</h2>
+        <form [formGroup]="addForm" (ngSubmit)="addTask()">
+            <label for="title">Title <span class="error">*</span> </label>
+            <input type="text" id="title" class="input" formControlName="title">
+
+            <label for="category">Category <span class="error">*</span></label>
+            <input type="text" id="category" class="input" formControlName="category">
+
+            <label for="dueDate">Due Date <span class="error">*</span></label>
+            <input type="date" id="dueDate" class="input" formControlName="dueDate">
+
+            <label for="estimate">Estimate <span class="error">*</span></label>
+            <div id="estimate">
+                <input type="number" class="input" min="1" formControlName="estimateNumber">
+                <select id="estimate-unit" class="input" formControlName="estimateUnit">
+                    <option 
+                        *ngFor="let unit of units; let i = index;" 
+                        [value]="+i"
+                    >
+                        {{ unit | titlecase }}
+                    </option>
+                </select>
+            </div>
+
+            <label for="importance">Importance <span class="error">*</span></label>
+            <select name="" id="importance" formControlName="importance" class="input">
+                <option 
+                    *ngFor="let option of keys(); let i = index" 
+                    [value]="i"
+                >
+                    {{ option | titlecase }}
+                </option>
+            </select>
+            <button type="submit">Add</button>
+        </form>
+    </div>
+</div>

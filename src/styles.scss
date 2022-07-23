@@ -43,8 +43,34 @@
 }
 
 body {
+    position: relative;
     margin: 0;
     height: 100vh;
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
+h2 {
+    font-family: "Helvetice-Neue-medium";
+    font-size: 18px;
+}
+
+button {
+    width: 100%;
+    margin-top: 30px;
+    border-radius: 30px;
+    border: none;
+    height: 30px;
+    font-weight: bold;
+    font-size: 18px;
+    background-color: #B6A3C2;
+    color: #403564;
+    font-family: "Helvetice-Neue-bold";
+    cursor: pointer;
+
+    &:disabled {
+        pointer-events: none;
+    }
 }
 
 .card {
@@ -56,6 +82,14 @@ body {
     cursor: move;
 }
   
+.error {
+    color: #FF5757;
+}
+
+.primary {
+    color: #8556A4;
+}
+
 .tooltip {
   display: none;
 }
@@ -81,8 +115,28 @@ body {
   right: 50%;
 }
 
-.scroll {
+.block-scroll {
     max-width: 100vw;
     max-height: 100vh;
     overflow: hidden;
+}
+
+
+.input {
+    width: 100%;
+    border: 1px solid #E0E0E0;
+    border-radius: 5px;
+    height: 30px;
+    padding: 0 5px;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+label {
+    font-family: "Helvetice-Neue-light";
+    font-size: 16px;
+    margin-top: 15px;
+    margin-bottom: 4px;
 }
