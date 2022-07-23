@@ -14,8 +14,6 @@
                 type="text" 
                 placeholder="What are you looking for?" 
                 [(ngModel)]="searchKey"
-                (input)="search()"
-                (keyup.backspace)="search()"
             >
             <img src="assets/images/Search.svg" alt="" class="svg">
         </div>
@@ -110,7 +108,7 @@
                 *ngFor="let task of toDos"
                 cdkDrag
                 [task]="task" 
-                [highlited]="results.includes(task)"
+                [keyword]="searchKey"
             ></app-card>
         </div>
         <div  
@@ -125,7 +123,7 @@
                 *ngFor="let task of doings"
                 cdkDrag
                 [task]="task"
-                [highlited]="results.includes(task)"
+                [keyword]="searchKey"
             >
             </app-card>
         </div>
@@ -141,7 +139,7 @@
                 *ngFor="let task of dones"
                 cdkDrag
                 [task]="task" 
-                [highlited]="results.includes(task)"
+                [keyword]="searchKey"
             ></app-card>
         </div>
     </div>

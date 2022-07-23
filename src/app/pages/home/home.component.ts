@@ -25,7 +25,6 @@ export class HomeComponent implements OnInit {
 
   overlay = false;
   searchKey: string = '';
-  results: Task[] = [];
 
   tasks: Task[] = [
     {
@@ -99,12 +98,6 @@ export class HomeComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-  }
-
-  search() {
-    if (this.searchKey.length > 0)
-      this.results = this.tasks.filter(t => t.title.toLowerCase().includes(this.searchKey.toLowerCase()));
-    else this.results = [];
   }
 
   @HostListener('document:mouseover', ['$event']) 

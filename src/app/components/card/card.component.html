@@ -4,12 +4,11 @@
         class="title"
         (click)="editMode = true"
     >
-        <span 
+        <div 
             *ngIf="!editMode"
-            [class.highlited]="highlited"
+            [innerHtml]="task.title  | highlighter:keyword"
         >
-            {{ task.title }}
-        </span>
+        </div>
         <input 
             *ngIf="editMode" 
             type="text"

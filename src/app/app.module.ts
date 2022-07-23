@@ -12,6 +12,7 @@ import { CardComponent } from './components/card/card.component';
 import { TooltipDirective } from './helpers/tooltip.directive';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { HighlighterPipe } from './helpers/highlighter.pipe';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     HomeComponent,
     CardComponent,
     TooltipDirective,
-    SidebarComponent
+    SidebarComponent,
+    HighlighterPipe
   ],
   imports: [
     BrowserModule,

@@ -14,8 +14,8 @@ export class CardComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  @Input('keyword') keyword: string = '';
   @Input('task') task: Task | null = null;
-  @Input('highlited') highlited: boolean = false;
 
   @ViewChild('host') host!: ElementRef<HTMLDivElement>;
   @ViewChild('titleRef') titleRef!: ElementRef<HTMLDivElement>;
