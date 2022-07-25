@@ -1,7 +1,9 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Task } from 'src/app/entities/task';
 import { AuthService } from 'src/app/services/auth.service';
+import { TaskService } from 'src/app/services/task.service';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +12,12 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private authService: AuthService) { }
+  public tasks$: Observable<Task[]>;
+
+  constructor(private authService: AuthService, private taskService: TaskService) { 
+    this.taskService.getTasks().subscribe();
+    this.tasks$ = this.taskService.tasks$;
+  }
 
   ngOnInit(): void {
   }
@@ -26,71 +33,7 @@ export class HomeComponent implements OnInit {
   overlay = false;
   searchKey: string = '';
 
-  tasks: Task[] = [
-    {
-      title: 'First Task',
-      dueDate: new Date(),
-      estimate: '3 hours',
-      date: new Date(2020, 5, 6),
-      category: 'Work',
-      status: 1,
-      importance: 2
-    },
-    {
-      title: 'Second Task',
-      dueDate: new Date(),
-      estimate: '3 hours',
-      date: new Date(2020, 5, 6),
-      category: 'Work',
-      status: 1,
-      importance: 1
-    },
-    {
-      title: 'Third Task',
-      dueDate: new Date(),
-      estimate: '3 hours',
-      date: new Date(2020, 5, 6),
-      category: 'Work',
-      status: 1,
-      importance: 1
-    },
-    {
-      title: 'Fourth Task',
-      dueDate: new Date(),
-      estimate: '3 hours',
-      date: new Date(2020, 5, 6),
-      category: 'Work',
-      status: 2,
-      importance: 1
-    },
-    {
-      title: 'Fifth Task',
-      dueDate: new Date(),
-      estimate: '3 hours',
-      date: new Date(2020, 5, 6),
-      category: 'Work',
-      status: 0,
-      importance: 2
-    },
-    {
-      title: 'Sixth Task',
-      dueDate: new Date(),
-      estimate: '3 hours',
-      date: new Date(2020, 5, 6),
-      category: 'Work',
-      status: 0,
-      importance: 0
-    },
-    {
-      title: 'Seventh Task',
-      dueDate: new Date(),
-      estimate: '3 hours',
-      date: new Date(2020, 5, 6),
-      category: 'Work',
-      status: 0,
-      importance: 1
-    },
-  ]
+  tasks: Task[] = []
 
   toDos = this.tasks.filter(t => t.status === 0);
   doings = this.tasks.filter(t => t.status === 1);

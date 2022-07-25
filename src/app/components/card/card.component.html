@@ -30,25 +30,21 @@
         </tr>
         <tr>
             <td>Due Date</td>
-            <td>{{ task.dueDate | date:'shortDate' }}</td>
+            <td>{{ task.dueDate ? (task.dueDate | date:'shortDate') : 'None' }}</td>
         </tr>
         <tr>
             <td>Estimate</td>
-            <td>{{ task.estimate }}</td>
+            <td>{{ task.estimatedTime }} {{ task.estimationUnit.toString() | lowercase }}</td>
         </tr>
         <tr>
             <td>Importance</td>
             <td>
                 <div 
-                    [ngClass]="{
-                        badge: true,
-                        low: task.importance === 0,
-                        medium: task.importance === 1,
-                        high: task.importance === 2
-                    }"
+                    class="badge"
+                    [class]="task.importance"
                     (change)="changePriority($event)"
                 >
-                    {{ importance[task.importance] | titlecase }}
+                    {{ task.importance.toString() | titlecase }}
                 </div>
             </td>
         </tr>

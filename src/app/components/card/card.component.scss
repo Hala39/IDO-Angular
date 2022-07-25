@@ -44,15 +44,15 @@ td:nth-child(even) {
     font-family: "Helvetice-Neue-light";
     color: white;
 
-    &.high {
+    &.HIGH {
         background-color: #DC3545;
     }
     
-    &.medium {
+    &.MEDIUM {
         background-color: #FE913E;
     }
     
-    &.low {
+    &.LOW {
         background-color: #39AC95;
     }
 }

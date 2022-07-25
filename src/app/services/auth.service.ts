@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { map } from 'rxjs';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { TaskService } from './task.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class AuthService {
     return this.httpClient.post(this.baseUrl + 'login', creds).pipe(
       map((response: any) => {
         localStorage.setItem('email', JSON.stringify(response.email));
-        localStorage.setItem('access_token', JSON.stringify(response.accessToken));
+        localStorage.setItem('access_token', response.accessToken);
         this.router.navigateByUrl("/home");
       })
     )

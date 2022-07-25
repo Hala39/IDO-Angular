@@ -24,7 +24,7 @@
                 <input type="number" class="input" min="1" formControlName="estimateNumber">
                 <select id="estimate-unit" class="input" formControlName="estimateUnit">
                     <option 
-                        *ngFor="let unit of units; let i = index;" 
+                        *ngFor="let unit of unitKeys(); let i = index;" 
                         [value]="+i"
                     >
                         {{ unit | titlecase }}
@@ -35,7 +35,7 @@
             <label for="importance">Importance <span class="error">*</span></label>
             <select name="" id="importance" formControlName="importance" class="input">
                 <option 
-                    *ngFor="let option of keys(); let i = index" 
+                    *ngFor="let option of importanceKeys(); let i = index" 
                     [value]="i"
                 >
                     {{ option | titlecase }}

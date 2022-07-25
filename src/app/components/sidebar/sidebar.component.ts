@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Importance } from 'src/app/entities/importance';
-import { units } from 'src/app/entities/units';
+import { Unit } from 'src/app/entities/unit';
 import { sidebarAnimations } from 'src/app/helpers/sidebar.animation';
 
 @Component({
@@ -32,12 +32,16 @@ export class SidebarComponent implements OnInit {
   visible = false;
 
   importance = Importance;
-  units = units;
-
+  unit = Unit;
   addForm: FormGroup;
 
-  keys() : Array<string> {
+  importanceKeys() : Array<string> {
     var keys = Object.keys(this.importance);
+    return keys.slice(keys.length / 2);
+  }
+
+  unitKeys() : Array<string> {
+    var keys = Object.keys(this.unit);
     return keys.slice(keys.length / 2);
   }
 
