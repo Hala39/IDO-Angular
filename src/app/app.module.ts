@@ -13,6 +13,7 @@ import { TooltipDirective } from './helpers/tooltip.directive';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HighlighterPipe } from './helpers/highlighter.pipe';
+import { AuthGuard } from './services/auth.guard';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import { HighlighterPipe } from './helpers/highlighter.pipe';
     DragDropModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

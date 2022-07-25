@@ -120,4 +120,5 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  email: string | null = localStorage.getItem('email');
 }

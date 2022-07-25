@@ -10,7 +10,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class AuthService {
 
-  private readonly baseUrl = environment.apiUrl + 'auth/';
+  private readonly baseUrl = environment.apiUrl + 'user/';
   helper = new JwtHelperService();
 
   constructor(private httpClient: HttpClient, private router: Router) { }
@@ -18,8 +18,8 @@ export class AuthService {
   login(creds: {email: string, password: string}) {
     return this.httpClient.post(this.baseUrl + 'login', creds).pipe(
       map((response: any) => {
-        localStorage.setItem('creds', JSON.stringify(response));
-        localStorage.setItem('access_token', JSON.stringify(response.token));
+        localStorage.setItem('email', JSON.stringify(response.email));
+        localStorage.setItem('access_token', JSON.stringify(response.accessToken));
         this.router.navigateByUrl("/home");
       })
     )
@@ -35,7 +35,7 @@ export class AuthService {
   }
 
   get authenticated() {
-    return this.accessToken !==  null && this.helper.isTokenExpired(this.accessToken);
+    return this.accessToken !==  null && !this.helper.isTokenExpired(this.accessToken);
   }
  
 }
