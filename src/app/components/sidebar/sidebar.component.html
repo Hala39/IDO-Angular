@@ -21,8 +21,8 @@
 
             <label for="estimate">Estimate <span class="error">*</span></label>
             <div id="estimate">
-                <input type="number" class="input" min="1" formControlName="estimateNumber">
-                <select id="estimate-unit" class="input" formControlName="estimateUnit">
+                <input type="number" class="input" min="1" formControlName="estimatedTime">
+                <select id="estimate-unit" class="input" formControlName="estimationUnit">
                     <option 
                         *ngFor="let unit of unitKeys(); let i = index;" 
                         [value]="+i"

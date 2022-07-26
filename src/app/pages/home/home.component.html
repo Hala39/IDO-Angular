@@ -87,14 +87,15 @@
             <img src="assets/images/DoneIcon.svg" alt="">
             <h2>Done</h2>
         </div>
+        <div class="action"
+            *ngIf="quoteRef.style.display === 'none'"
+            style="display: inline-flex; justify-content: flex-end; width: 100%;"
+            (click)="quoteRef.style.display = 'flex'"
+        >
+            <img src="assets/images/ShowQuoteIcon.svg" alt="" height="20" style="cursor: pointer;">
+        </div>
     </div>
-    <div 
-        *ngIf="quoteRef.style.display === 'none'"
-        style="display: inline-flex; justify-content: flex-end; width: 25%;"
-        (click)="quoteRef.style.display = 'flex'"
-    >
-        <img src="assets/images/ShowQuoteIcon.svg" alt="" style="cursor: pointer;">
-    </div>
+    
     <div class="grid">
         <div 
             class="list"

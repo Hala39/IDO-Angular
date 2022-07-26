@@ -1,9 +1,10 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Importance } from 'src/app/entities/importance';
 import { Unit } from 'src/app/entities/unit';
 import { sidebarAnimations } from 'src/app/helpers/sidebar.animation';
+import { TaskService } from 'src/app/services/task.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,13 +14,13 @@ import { sidebarAnimations } from 'src/app/helpers/sidebar.animation';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor(@Inject(DOCUMENT) private document: Document) { 
+  constructor(@Inject(DOCUMENT) private document: Document, private taskService: TaskService) { 
     this.addForm = new FormGroup({
       category: new FormControl(null, Validators.required),
       title: new FormControl(null, Validators.required),
       dueDate: new FormControl(null, Validators.required),
-      estimateNumber: new FormControl(1, Validators.required),
-      estimateUnit: new FormControl(1, Validators.required),
+      estimatedTime: new FormControl(1, Validators.required),
+      estimationUnit: new FormControl(1, Validators.required),
       importance: new FormControl(1, Validators.required),
       status: new FormControl(0)
     })
@@ -56,6 +57,15 @@ export class SidebarComponent implements OnInit {
   }
 
   addTask() {
-    console.log(this.addForm.value)
+    const task: any = {
+      title: this.addForm.get('title')?.value,
+      category: this.addForm.get('category')?.value,
+      dueDate: this.addForm.get('dueDate')?.value,
+      estimatedTime: this.addForm.get('estimatedTime')?.value,
+      estimationUnit: this.addForm.get('estimationUnit')?.value,
+      importance: this.addForm.get('importance')?.value,
+    }
+    console.log(task)
+    // this.taskService.addTask(task).subscribe(response => console.log(response));
   }
 }
