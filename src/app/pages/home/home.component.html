@@ -100,12 +100,12 @@
             class="list"
             #toDosRef="cdkDropList"
             cdkDropList 
-            (cdkDropListDropped)="drop($event)"
+            (cdkDropListDropped)="drop($event, 0)"
             [cdkDropListData]="toDos"
             [cdkDropListConnectedTo]="[doingsRef, donesRef]"
         >
             <app-card 
-                *ngFor="let task of tasks$ | async"
+                *ngFor="let task of toDos"
                 cdkDrag
                 [task]="task" 
                 [keyword]="searchKey"
@@ -115,7 +115,7 @@
             class="list"
             #doingsRef="cdkDropList"
             cdkDropList 
-            (cdkDropListDropped)="drop($event)"
+            (cdkDropListDropped)="drop($event, 1)"
             [cdkDropListData]="doings"
             [cdkDropListConnectedTo]="[toDosRef, donesRef]"
         >
@@ -131,7 +131,7 @@
             class="list"
             #donesRef="cdkDropList"
             cdkDropList 
-            (cdkDropListDropped)="drop($event)"
+            (cdkDropListDropped)="drop($event, 2)"
             [cdkDropListData]="dones"
             [cdkDropListConnectedTo]="[toDosRef, doingsRef]"
         >

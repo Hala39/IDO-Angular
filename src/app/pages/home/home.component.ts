@@ -1,6 +1,5 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, ElementRef, HostListener, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Task } from 'src/app/entities/task';
 import { AuthService } from 'src/app/services/auth.service';
 import { TaskService } from 'src/app/services/task.service';
@@ -12,11 +11,12 @@ import { TaskService } from 'src/app/services/task.service';
 })
 export class HomeComponent implements OnInit {
 
-  public tasks$: Observable<Task[]>;
-
   constructor(private authService: AuthService, private taskService: TaskService) { 
-    this.taskService.getTasks().subscribe();
-    this.tasks$ = this.taskService.tasks$;
+    this.taskService.getTasks().subscribe((response: any) => {
+      this.toDos = response.filter((t: any) => t.status.toString() === 'TODO');
+      this.doings = response.filter((t: any) => t.status.toString() === 'DOING');
+      this.dones = response.filter((t: any) => t.status.toString() === 'DONE');
+    });
   }
 
   ngOnInit(): void {
@@ -33,11 +33,9 @@ export class HomeComponent implements OnInit {
   overlay = false;
   searchKey: string = '';
 
-  tasks: Task[] = []
-
-  toDos = this.tasks.filter(t => t.status === 0);
-  doings = this.tasks.filter(t => t.status === 1);
-  dones = this.tasks.filter(t => t.status === 2);
+  toDos!: Task[];
+  doings!:  Task[];
+  dones!:  Task[];
 
   logout() {
     this.authService.logout();
@@ -50,7 +48,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  drop(event: CdkDragDrop<Task[]>) {
+  drop(event: CdkDragDrop<Task[]>, target: number) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -60,7 +58,14 @@ export class HomeComponent implements OnInit {
         event.previousIndex,
         event.currentIndex,
       );
+
+        this.taskService.updateTaskStatus({
+          taskId: event.container.data[event.currentIndex].id, targetStatusIndex: target
+        }).subscribe((response => console.log(response)));
+      
     }
+
+    console.log(event.container.data[event.currentIndex].id)
   }
 
   email: string | null = localStorage.getItem('email');

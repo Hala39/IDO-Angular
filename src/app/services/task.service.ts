@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, filter, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Result } from '../entities/result';
+import { Status } from '../entities/stage';
 import { Task } from '../entities/task';
 
 @Injectable({
@@ -11,22 +12,16 @@ import { Task } from '../entities/task';
 export class TaskService {
 
   private readonly baseUrl = environment.apiUrl + 'task/';
-
-  private tasksSource = new BehaviorSubject<Task[]>([]);
-  tasks$ = this.tasksSource.asObservable();
-
+  
   constructor(private httpClient: HttpClient) { }
 
   getTasks() {
     return this.httpClient.get<Result<Task[]>>(this.baseUrl).pipe(
       map((response: Result<Task[]>) => {
-        if (response.value)
-          this.tasksSource.next(response.value);
         if (!response.isSuccess) {
           console.log(response.error)
         }
-
-        console.log(response)
+          return response.value;
       })
     )
   }
@@ -37,6 +32,7 @@ export class TaskService {
         if (!response.isSuccess) {
           console.log(response.error)
         }
+        return response.value;
       })
     );
   }
@@ -44,27 +40,36 @@ export class TaskService {
   addTask(task: Task) {
     return this.httpClient.post<Result<Task>>(this.baseUrl, task).pipe(
       map((response: Result<Task>) => {
-        if (response.value) 
-          this.tasksSource.next([...this.tasksSource.value, response.value]);
-
         if (!response.isSuccess) {
           console.log(response.error)
         }
+          return response.value;
       })
     );
   }
 
-  updateTaskTitle(params: {id: number, title: string}) {
+  updateTaskTitle(params: {id: number, title: string, status: Status}) {
     return this.httpClient.put<Result<Task>>(this.baseUrl, params).pipe(
       map((response: Result<Task>) => {
-        if (response.value) 
-          this.tasksSource
-            .next([...this.tasksSource.value.filter(t => t.id !== params.id), response.value]);
-        
         if (!response.isSuccess) {
           console.log(response.error)
         }
+          return response.value;
       })
     );
   }
+
+  updateTaskStatus(params: {taskId: number, targetStatusIndex: number}) {
+    return this.httpClient.put<Result<Task>>(this.baseUrl + 'status', params).pipe(
+      map((response: Result<Task>) => {
+        if (!response.isSuccess) {
+          console.log(response.error)
+        }
+          return response.value;
+      })
+    )
+  }
+
 }
+
+
