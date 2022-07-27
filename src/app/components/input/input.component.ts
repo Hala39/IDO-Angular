@@ -1,5 +1,5 @@
 import { fn, FnParam } from '@angular/compiler/src/output/output_ast';
-import { Component, Input, OnChanges, OnInit, Optional, Self, SimpleChanges } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnInit, Optional, Self, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NgControl, Validators } from '@angular/forms';
 
 @Component({
@@ -9,7 +9,7 @@ import { ControlValueAccessor, NgControl, Validators } from '@angular/forms';
 })
 export class InputComponent implements OnInit, OnChanges, ControlValueAccessor {
 
-  constructor(@Self() @Optional() public control: NgControl) {
+  constructor(@Self() @Optional() public control: NgControl, private cdRef: ChangeDetectorRef) {
     if (this.control) this.control.valueAccessor = this;
   }
 
@@ -19,13 +19,25 @@ export class InputComponent implements OnInit, OnChanges, ControlValueAccessor {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['type']?.currentValue === 'number') 
       this.maxContent = false;
+    if (this.required) {
+      this.control.control?.addValidators(Validators.required);
+    }
+    if (this.type === 'email') {
+      this.control.control?.addValidators(Validators.pattern(this.emailRegEx))
+    }
+    if (this.type === 'number') {
+      this.control.control?.addValidators(Validators.pattern(/^[0-9]*$/))
+    }
+    if (this.type === 'text') {
+      this.control.control?.addValidators([Validators.minLength(this.min), Validators.maxLength(this.max)])
+    }
   }
 
   ngOnInit(): void {
   }
 
   writeValue(obj: any): void {
-    this.value = obj || '';
+    this.value = obj;
   }
   
   registerOnChange(fn: any): void {
@@ -60,18 +72,7 @@ export class InputComponent implements OnInit, OnChanges, ControlValueAccessor {
   }
 
   ngAfterViewInit() {
-    if (this.required) {
-      this.control.control?.addValidators(Validators.required)
-    }
-    if (this.type === 'email') {
-      this.control.control?.addValidators(Validators.pattern(this.emailRegEx))
-    }
-    if (this.type === 'number') {
-      this.control.control?.addValidators(Validators.pattern(/^[0-9]*$/))
-    }
-    if (this.type === 'text') {
-      this.control.control?.addValidators([Validators.minLength(this.min), Validators.maxLength(this.max)])
-    }
+    this.cdRef.detectChanges();
   }
 
 }

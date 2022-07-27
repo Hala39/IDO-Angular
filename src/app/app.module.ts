@@ -17,6 +17,7 @@ import { AuthGuard } from './services/auth.guard';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { InputComponent } from './components/input/input.component';
 import { MaxLengthPipe } from './helpers/maxlength.pipe';
+import { PluralPipe } from './helpers/plural.pipe';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { MaxLengthPipe } from './helpers/maxlength.pipe';
     SidebarComponent,
     HighlighterPipe,
     MaxLengthPipe,
+    PluralPipe,
     InputComponent
   ],
   imports: [

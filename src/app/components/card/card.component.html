@@ -12,7 +12,7 @@
         <input 
             *ngIf="editMode" 
             type="text"
-            [value]="task.title"
+            [value]="task.title | titlecase"
             autofocus
         >
         <button 
@@ -26,7 +26,7 @@
     <table>
         <tr>
             <td>Category</td>
-            <td>{{ task.category }}</td>
+            <td>{{ task.category | titlecase }}</td>
         </tr>
         <tr>
             <td>Due Date</td>
@@ -34,7 +34,7 @@
         </tr>
         <tr>
             <td>Estimate</td>
-            <td>{{ task.estimatedTime }} {{ task.estimationUnit.toString() | lowercase }}</td>
+            <td>{{ task.estimatedTime }} {{ task.estimationUnit.toString() | lowercase | plural:task.estimatedTime }}</td>
         </tr>
         <tr>
             <td>Importance</td>

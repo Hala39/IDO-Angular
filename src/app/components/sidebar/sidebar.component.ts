@@ -16,10 +16,10 @@ export class SidebarComponent implements OnInit {
 
   constructor(@Inject(DOCUMENT) private document: Document, private taskService: TaskService) { 
     this.addForm = new FormGroup({
-      category: new FormControl(null),
-      title: new FormControl(null),
+      category: new FormControl(null, Validators.required),
+      title: new FormControl(null, Validators.required),
       dueDate: new FormControl(null),
-      estimatedTime: new FormControl(1),
+      estimatedTime: new FormControl(1, Validators.required),
       estimationUnit: new FormControl(1),
       importance: new FormControl(1),
       status: new FormControl(0)
@@ -76,6 +76,8 @@ export class SidebarComponent implements OnInit {
           this.addForm.get('dueDate')?.reset();
         }; 
       });
+    } else {
+      this.addForm.markAllAsTouched();
     }
   }
 }
