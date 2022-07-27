@@ -64,9 +64,11 @@ export class HomeComponent implements OnInit {
         }).subscribe((response => console.log(response)));
       
     }
-
-    console.log(event.container.data[event.currentIndex].id)
   }
 
   email: string | null = localStorage.getItem('email');
+
+  addTask($event: any) {
+    this.toDos.unshift($event);
+  }
 }

@@ -69,8 +69,13 @@ button {
     font-family: "Helvetice-Neue-bold";
     cursor: pointer;
 
-    &:disabled {
+    &:disabled, [disabled] {
         pointer-events: none;
+        opacity: 0.7;
+    }
+
+    &:active {
+        opacity: 0.7;
     }
 }
 
@@ -85,10 +90,6 @@ button {
   
 .highlighted {
     background-color: #fedb3e;
-}
-
-.error {
-    color: #FF5757;
 }
 
 .primary {
@@ -131,8 +132,12 @@ button {
     width: 100%;
     border: 1px solid #E0E0E0;
     border-radius: 5px;
-    height: 30px;
+    height: 35px;
     padding: 0 5px;
+
+    &.max-content {
+        width: max-content;
+    }
 
     &:focus {
         outline: none;
@@ -144,4 +149,5 @@ label {
     font-size: 16px;
     margin-top: 15px;
     margin-bottom: 4px;
+    display: block;
 }

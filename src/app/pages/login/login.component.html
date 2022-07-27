@@ -14,22 +14,15 @@
                     <div *ngIf="errorMessage" class="error-message">
                         Invalid email or password.
                     </div>
-                    <label for="email">Email</label>
-                    <input 
-                        type="text" 
-                        id="email" 
-                        class="input"
-                        formControlName="email" 
-                        (input)="errorMessage = false"
-                    >
-                    <label for="password">Password</label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        class="input"
-                        formControlName="password" 
-                        (input)="errorMessage = false"
-                    >
+                    <ng-container *ngFor="let control of loginForm.controls | keyvalue">
+                        <app-input 
+                            [type]="control.key"
+                            [label]="control.key"
+                            [formControlName]="control.key"
+                            [maxContent]="false"
+                            [light]="true"
+                        ></app-input>
+                    </ng-container>
                     <button 
                         class="btn" 
                         type="submit" 

@@ -15,6 +15,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HighlighterPipe } from './helpers/highlighter.pipe';
 import { AuthGuard } from './services/auth.guard';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { InputComponent } from './components/input/input.component';
+import { MaxLengthPipe } from './helpers/maxlength.pipe';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     CardComponent,
     TooltipDirective,
     SidebarComponent,
-    HighlighterPipe
+    HighlighterPipe,
+    MaxLengthPipe,
+    InputComponent
   ],
   imports: [
     BrowserModule,

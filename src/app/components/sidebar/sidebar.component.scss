@@ -30,17 +30,6 @@ form > * {
   display: block;
 } 
 
-input {
-  width: max-content;
-  height: 35px;
-}
-
-input[type='number'] {
-  display: inline-block;
-  width: 20%;
-  margin-right: 5px;
-}
-
 select {
   display: inline-block;
   width: max-content;

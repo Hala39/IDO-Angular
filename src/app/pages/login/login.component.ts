@@ -11,29 +11,30 @@ export class LoginComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private authService: AuthService) { 
     this.loginForm = this.fb.group({
-      email: new FormControl('user@ido.com', 
-        [
-          Validators.required, 
-          Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
-        ]),
-      password: new FormControl('Pa$$w0rd', [Validators.required, Validators.minLength(6)])
+      email: new FormControl('user@ido.com'),
+      password: new FormControl('Pa$$w0rd')
     })
   }
 
-  ngOnInit(): void {} 
+  ngOnInit(): void {
+    this.loginForm.valueChanges.subscribe(form => {
+      if (this.loginForm.valid)
+        this.errorMessage = false;
+    })
+  } 
 
   loginForm: FormGroup;
   errorMessage: boolean = false;
 
   login() {
     if (this.loginForm.valid) {
-      this.authService.login({
-        email: this.loginForm.get('email')?.value, 
-        password: this.loginForm.get('password')?.value
-      }).subscribe();
+      this.authService.login(this.loginForm.value).subscribe({
+        error: () => {
+          this.errorMessage = true;
+          this.loginForm.get('password')?.reset();
+        }
+      });
     }
-    // this.errorMessage = true;
-    // this.loginForm.get('password')?.reset();
   }
 
 }

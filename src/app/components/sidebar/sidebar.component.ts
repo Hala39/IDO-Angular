@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Importance } from 'src/app/entities/importance';
 import { Unit } from 'src/app/entities/unit';
 import { sidebarAnimations } from 'src/app/helpers/sidebar.animation';
@@ -16,12 +16,12 @@ export class SidebarComponent implements OnInit {
 
   constructor(@Inject(DOCUMENT) private document: Document, private taskService: TaskService) { 
     this.addForm = new FormGroup({
-      category: new FormControl(null, Validators.required),
-      title: new FormControl(null, Validators.required),
-      dueDate: new FormControl(null, Validators.required),
-      estimatedTime: new FormControl(1, Validators.required),
-      estimationUnit: new FormControl(1, Validators.required),
-      importance: new FormControl(1, Validators.required),
+      category: new FormControl(null),
+      title: new FormControl(null),
+      dueDate: new FormControl(null),
+      estimatedTime: new FormControl(1),
+      estimationUnit: new FormControl(1),
+      importance: new FormControl(1),
       status: new FormControl(0)
     })
   }
@@ -30,11 +30,20 @@ export class SidebarComponent implements OnInit {
   }
 
   @ViewChild('sidebarRef') sidebarRef!: ElementRef<HTMLDivElement>;
+  @Output('taskAdded') taskAddedEmitter = new EventEmitter();
+
   visible = false;
+  today = new Date();
+  minDate: string = `${this.today.getFullYear()}-${this.formatMonth(this.today.getMonth())}-${this.today.getDate()}`;
+
+  formatMonth(month: number) : string {
+    return month + 1 < 10 ? `0${month + 1}` : (month + 1).toString();
+  }
 
   importance = Importance;
   unit = Unit;
   addForm: FormGroup;
+  minlength = 3;
 
   importanceKeys() : Array<string> {
     var keys = Object.keys(this.importance);
@@ -57,15 +66,16 @@ export class SidebarComponent implements OnInit {
   }
 
   addTask() {
-    const task: any = {
-      title: this.addForm.get('title')?.value,
-      category: this.addForm.get('category')?.value,
-      dueDate: this.addForm.get('dueDate')?.value,
-      estimatedTime: this.addForm.get('estimatedTime')?.value,
-      estimationUnit: this.addForm.get('estimationUnit')?.value,
-      importance: this.addForm.get('importance')?.value,
+    if (this.addForm.valid) {
+      this.taskService.addTask(this.addForm.value).subscribe(response => {
+        if (response) {
+          this.taskAddedEmitter.emit(response);
+          this.visible = false;
+          this.addForm.get('title')?.reset();
+          this.addForm.get('category')?.reset();
+          this.addForm.get('dueDate')?.reset();
+        }; 
+      });
     }
-    console.log(task)
-    // this.taskService.addTask(task).subscribe(response => console.log(response));
   }
 }
