@@ -11,7 +11,6 @@ import { HomeComponent } from './pages/home/home.component';
 import { CardComponent } from './components/card/card.component';
 import { TooltipDirective } from './helpers/tooltip.directive';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HighlighterPipe } from './helpers/highlighter.pipe';
 import { AuthGuard } from './services/auth.guard';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -26,7 +25,6 @@ import { PluralPipe } from './helpers/plural.pipe';
     HomeComponent,
     CardComponent,
     TooltipDirective,
-    SidebarComponent,
     HighlighterPipe,
     MaxLengthPipe,
     PluralPipe,

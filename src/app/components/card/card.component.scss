@@ -6,17 +6,66 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border: none;
     cursor: text;
 }
 
 input {
-    @extend .title;
-    margin-bottom: 0px;
-    width: 100%;
     border: none;
+    font-family: "Helvetice-Neue-light";
+    font-size: 14px;
+    border-radius: 2px;
+    line-height: 1.5;
+    padding: 0 5px;
+    margin-bottom: 0px;
 
     &:focus {
         outline: none;
+    }
+
+    &:focus:not(.borderless) {
+        border: 1px solid #6C757D;
+    }
+
+    &[type='number'] {
+        display: inline;
+        padding-left: 5px;
+    }
+}
+
+.card {
+    &.shadowed {
+        border: 3px solid #00000029;
+    }
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+select {
+    width: 5rem;
+    border: none;
+    border-radius: 2px;
+    height: 1.5rem;
+
+    &:focus {
+        outline: none;
+        border: 1px solid #6C757D;
     }
 }
 
@@ -33,6 +82,18 @@ td:nth-child(odd) {
 
 td:nth-child(even) {
     font-family: "Helvetice-Neue-light";
+    cursor: text;
+}
+
+textarea {
+    resize: none;
+    margin-bottom: 20px !important;
+    width: 100%;
+    overflow-y: visible;
+
+    &:focus {
+        outline: none;
+    }
 }
 
 .badge {
@@ -40,27 +101,21 @@ td:nth-child(even) {
     border-radius: 4px;
     border: none;
     font-size: 13px;
+    width: min-content;
     padding: 7px;
     font-family: "Helvetice-Neue-light";
     color: white;
 
-    &.HIGH {
+    &.high {
         background-color: #DC3545;
     }
     
-    &.MEDIUM {
+    &.medium {
         background-color: #FE913E;
     }
     
-    &.LOW {
+    &.low {
         background-color: #39AC95;
     }
-}
-
-button {
-    border-radius: 6px;
-    width: max-content;
-    margin-top: 0;
-    padding: 5px 7px;
 }
 

@@ -48,8 +48,8 @@ export class TaskService {
     );
   }
 
-  updateTaskTitle(params: {id: number, title: string, status: Status}) {
-    return this.httpClient.put<Result<Task>>(this.baseUrl, params).pipe(
+  updateTaskTitle(task: Task) {
+    return this.httpClient.put<Result<Task>>(this.baseUrl, task).pipe(
       map((response: Result<Task>) => {
         if (!response.isSuccess) {
           console.log(response.error)

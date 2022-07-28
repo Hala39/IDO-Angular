@@ -21,7 +21,7 @@
             tooltip="Add item"
             class="svg" 
             style="position: relative;" 
-            (click)="sidebarRef.open()"
+            (click)="fill = true"
         >
             <img src="assets/images/Circle.svg" alt="" class="circle">
             <img src="assets/images/Add.svg" alt="" class="plus">
@@ -96,6 +96,9 @@
         </div>
     </div>
     
+    <div *ngIf="tasksCount === 0" class="feedback">
+        Your list is empty! Try adding new Tasks and make sure the server is running.
+    </div>
     <div class="grid">
         <div 
             class="list"
@@ -106,9 +109,18 @@
             [cdkDropListConnectedTo]="[doingsRef, donesRef]"
         >
             <app-card 
+                *ngIf="fill" 
+                [add]="true" 
+                (onItemChanged)="addTask($event)" 
+                [editMode]="fill"
+            >
+            </app-card>
+
+            <app-card 
                 *ngFor="let task of toDos"
                 cdkDrag
                 [task]="task" 
+                (onItemChanged)="editTask($event, task.status)" 
                 [keyword]="searchKey"
             ></app-card>
         </div>
@@ -124,6 +136,7 @@
                 *ngFor="let task of doings"
                 cdkDrag
                 [task]="task"
+                (onItemChanged)="editTask($event, task.status)" 
                 [keyword]="searchKey"
             >
             </app-card>
@@ -139,11 +152,11 @@
             <app-card 
                 *ngFor="let task of dones"
                 cdkDrag
-                [task]="task" 
+                (onItemChanged)="editTask($event, task.status)"
                 [keyword]="searchKey"
+                [task]="task" 
             ></app-card>
         </div>
+        <div></div>
     </div>
 </div>
-
-<app-sidebar #sidebarRef (taskAdded)="addTask($event)"></app-sidebar>

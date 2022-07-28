@@ -12,10 +12,16 @@ import { TaskService } from 'src/app/services/task.service';
 export class HomeComponent implements OnInit {
 
   constructor(private authService: AuthService, private taskService: TaskService) { 
+    this.getTasks();
+  }
+
+  getTasks() {
     this.taskService.getTasks().subscribe((response: any) => {
-      this.toDos = response.filter((t: any) => t.status.toString() === 'TODO');
-      this.doings = response.filter((t: any) => t.status.toString() === 'DOING');
-      this.dones = response.filter((t: any) => t.status.toString() === 'DONE');
+      this.task = response[0];
+      this.toDos = response.filter((t: any) => t.status === 0);
+      this.doings = response.filter((t: any) => t.status === 1);
+      this.dones = response.filter((t: any) => t.status === 2);
+      this.tasksCount = response.length;
     });
   }
 
@@ -32,10 +38,13 @@ export class HomeComponent implements OnInit {
 
   overlay = false;
   searchKey: string = '';
+  task!: Task;
 
   toDos!: Task[];
   doings!:  Task[];
   dones!:  Task[];
+  tasksCount: number = 0;
+  fill = false;
 
   logout() {
     this.authService.logout();
@@ -61,14 +70,39 @@ export class HomeComponent implements OnInit {
 
         this.taskService.updateTaskStatus({
           taskId: event.container.data[event.currentIndex].id, targetStatusIndex: target
-        }).subscribe((response => console.log(response)));
+        }).subscribe((response => {
+          this.getTasks();
+        }));
       
     }
   }
 
   email: string | null = localStorage.getItem('email');
 
-  addTask($event: any) {
+  addTask($event: Task) {
     this.toDos.unshift($event);
+    this.fill = false;
   }
+
+  editTask($event: Task, status: number) {
+    let index: any;
+    console.log(status)
+    switch (status) {
+      case 0:
+        index = this.toDos.find(t => t.id === $event.id);
+        this.toDos.splice(index, 1, $event);
+        break;
+      case 1: 
+        index = this.doings.findIndex(t => t.id === $event.id);
+        this.doings.splice(index, 1, $event);
+        break;
+      case 2:
+        index = this.dones.findIndex(t => t.id === $event.id);
+        this.dones.splice(index, 1, $event);
+        break;
+      default:
+        break;
+    }
+  }
+
 }

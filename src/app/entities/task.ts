@@ -8,7 +8,7 @@ export class Task {
     category: string = '';
     dueDate?: Date = new Date();
     estimatedTime: number = 1;
-    estimationUnit: Unit = Unit.MINUTE;
+    estimationUnit: string = '';
     importance: Importance = Importance.LOW;
     status: Status = Status.TODO;
     date?: Date = new Date();

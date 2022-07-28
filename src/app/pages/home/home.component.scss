@@ -33,7 +33,7 @@
 }
 
 .header-right {
-    display: flex;
+    display: flex; 
     align-items: center;
 }
 
@@ -70,7 +70,7 @@
 .grid {
     width: 100%;
     display: inline-grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 25%);
     gap: 10px 25px;
 }
 
@@ -162,4 +162,12 @@
 
 form > * {
     display: block;
+}
+
+.feedback {
+    height: 100%;
+    font-size: larger;
+    display: flex;
+    padding-top: 200px;
+    justify-content: center;
 }

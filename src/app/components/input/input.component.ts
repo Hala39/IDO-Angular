@@ -53,7 +53,7 @@ export class InputComponent implements OnInit, OnChanges, ControlValueAccessor {
   @Input('placeholder') placeholder = '';
   @Input('required') required = true;
   @Input('min') min = 2;
-  @Input('max') max = 50;
+  @Input('max') max = 500;
   @Input('class') class = '';
   @Input('minDate') minDate = '';
   @Input('maxContent') maxContent = true;
