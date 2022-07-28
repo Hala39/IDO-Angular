@@ -15,13 +15,13 @@
                         Invalid email or password.
                     </div>
                     <ng-container *ngFor="let control of loginForm.controls | keyvalue">
-                        <app-input 
-                            [type]="control.key"
-                            [label]="control.key"
+                        <label [for]="control.key">{{ control.key | titlecase }}</label>
+                        <input 
+                            class="input" 
+                            [id]="control.key" 
+                            [type]="control.key" 
                             [formControlName]="control.key"
-                            [maxContent]="false"
-                            [light]="true"
-                        ></app-input>
+                        >
                     </ng-container>
                     <button 
                         class="btn" 
