@@ -2,7 +2,7 @@
     <div 
         #titleRef
         class="title"
-        (click)="editMode = true"
+        (click)="editModeOn()"
     >
         <div 
             [innerHtml]="task.title | highlighter:keyword"
@@ -12,21 +12,21 @@
     <table>
         <tr>
             <td>Category</td>
-            <td (click)="editMode = true">{{ (task.category | titlecase) || 'None' }}</td>
+            <td (click)="editModeOn()">{{ (task.category | titlecase) || 'None' }}</td>
         </tr>
         <tr>
             <td>Due Date</td>
-            <td (click)="editMode = true">{{ task.dueDate ? (task.dueDate | date:'shortDate') : 'None' }}</td>
+            <td (click)="editModeOn()">{{ task.dueDate ? (task.dueDate | date:'shortDate') : 'None' }}</td>
         </tr>
         <tr>
             <td>Estimate</td>
-            <td (click)="editMode = true">{{ task.estimatedTime }} {{ task.estimationUnit || 'None'}}</td>
+            <td (click)="editModeOn()">{{ task.estimatedTime }} {{ task.estimationUnit || 'None'}}</td>
         </tr>
         <tr>
             <td>Importance</td>
             <td>
                 <div 
-                (click)="editMode = true"
+                (click)="editModeOn()"
                     class="badge"
                     [ngClass]="{
                         low: task.importance === 0,
@@ -40,7 +40,7 @@
         </tr>
     </table>
 </div>
-<div class="card shadowed" #addCardRef *ngIf="editMode">
+<div class="card" #addCardRef *ngIf="editMode">
     <form [formGroup]="addForm">
         <textarea 
             #textareaRef
@@ -48,6 +48,7 @@
             placeholder="Task title"
             formControlName="title"
             autofocus
+            rows="1"
             (input)="resize($event)"
             (focus)="resize($event)"
         ></textarea>

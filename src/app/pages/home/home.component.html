@@ -115,14 +115,25 @@
                 [editMode]="fill"
             >
             </app-card>
-
-            <app-card 
-                *ngFor="let task of toDos"
-                cdkDrag
-                [task]="task" 
-                (onItemChanged)="editTask($event, task.status)" 
-                [keyword]="searchKey"
-            ></app-card>
+            <ng-container *ngFor="let task of toDos">
+                <app-card 
+                    *ngIf="focusedTask !== task"
+                    cdkDrag
+                    [task]="task" 
+                    (onItemChanged)="editTask($event, task.status)" 
+                    [keyword]="searchKey"
+                    (onFocus)="focusedTask = task"
+                ></app-card>
+                <app-card 
+                    *ngIf="focusedTask === task"
+                    cdkDrag
+                    [editMode]="true"
+                    [task]="task" 
+                    (onItemChanged)="editTask($event, task.status)" 
+                    [keyword]="searchKey"
+                ></app-card>
+            </ng-container>
+            
         </div>
         <div  
             class="list"
@@ -132,14 +143,24 @@
             [cdkDropListData]="doings"
             [cdkDropListConnectedTo]="[toDosRef, donesRef]"
         >
-            <app-card
-                *ngFor="let task of doings"
+        <ng-container *ngFor="let task of doings">
+            <app-card 
+                *ngIf="focusedTask !== task"
                 cdkDrag
-                [task]="task"
+                [task]="task" 
                 (onItemChanged)="editTask($event, task.status)" 
                 [keyword]="searchKey"
-            >
-            </app-card>
+                (onFocus)="focusedTask = task"
+            ></app-card>
+            <app-card 
+                *ngIf="focusedTask === task"
+                cdkDrag
+                [editMode]="true"
+                [task]="task" 
+                (onItemChanged)="editTask($event, task.status)" 
+                [keyword]="searchKey"
+            ></app-card>
+        </ng-container>
         </div>
         <div 
             class="list"

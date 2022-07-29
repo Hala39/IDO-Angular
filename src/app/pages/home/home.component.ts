@@ -17,7 +17,6 @@ export class HomeComponent implements OnInit {
 
   getTasks() {
     this.taskService.getTasks().subscribe((response: any) => {
-      this.task = response[0];
       this.toDos = response.filter((t: any) => t.status === 0);
       this.doings = response.filter((t: any) => t.status === 1);
       this.dones = response.filter((t: any) => t.status === 2);
@@ -38,7 +37,6 @@ export class HomeComponent implements OnInit {
 
   overlay = false;
   searchKey: string = '';
-  task!: Task;
 
   toDos!: Task[];
   doings!:  Task[];
@@ -84,12 +82,13 @@ export class HomeComponent implements OnInit {
     this.fill = false;
   }
 
+  focusedTask!: Task;
+
   editTask($event: Task, status: number) {
     let index: any;
-    console.log(status)
     switch (status) {
       case 0:
-        index = this.toDos.find(t => t.id === $event.id);
+        index = this.toDos.findIndex(t => t.id === $event.id);
         this.toDos.splice(index, 1, $event);
         break;
       case 1: 

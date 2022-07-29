@@ -49,6 +49,8 @@ export class CardComponent implements OnInit, OnChanges {
   @ViewChild('addCardRef') addCardRef!: ElementRef<HTMLDivElement>;
   @ViewChild('textareaRef') textareaRef!: ElementRef<HTMLTextAreaElement>;
 
+  @Output('onFocus') onFocus = new EventEmitter();
+
   importance = Importance;
   addForm!: FormGroup;
 
@@ -80,6 +82,11 @@ export class CardComponent implements OnInit, OnChanges {
       }
       
     } 
+  }
+
+  editModeOn() {
+    this.editMode = true;
+    this.onFocus.emit(this.task)
   }
 
   @HostListener('document:click', ['$event'])
