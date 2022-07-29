@@ -1,5 +1,6 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Status } from 'src/app/entities/stage';
 import { Task } from 'src/app/entities/task';
 import { AuthService } from 'src/app/services/auth.service';
 import { TaskService } from 'src/app/services/task.service';
@@ -15,18 +16,34 @@ export class HomeComponent implements OnInit {
     this.getTasks();
   }
 
+  status = {
+    TODO: 0,
+    DOING: 1,
+    DONE: 2
+
+  };
+
+  statusKeys() : Array<string> {
+    var keys = Object.keys(this.status);
+    return keys.slice(keys.length / 2);
+  }
+
   getTasks() {
     this.taskService.getTasks().subscribe((response: any) => {
-      this.task = response[0];
-      this.toDos = response.filter((t: any) => t.status === 0);
-      this.doings = response.filter((t: any) => t.status === 1);
-      this.dones = response.filter((t: any) => t.status === 2);
+      this.sets.push(response.filter((t: any) => t.status === 0));
+      this.sets.push(response.filter((t: any) => t.status === 1));
+      this.sets.push(response.filter((t: any) => t.status === 2));
+      // this.toDos = response.filter((t: any) => t.status === 0);
+      // this.doings = response.filter((t: any) => t.status === 1);
+      // this.dones = response.filter((t: any) => t.status === 2);
       this.tasksCount = response.length;
     });
   }
 
   ngOnInit(): void {
   }
+
+  sets: Task[][] = [];
 
   @ViewChild('searchBoxRef') searchBoxRef!: ElementRef<HTMLDivElement>;
   @ViewChild('searchIconRef') searchIconRef!: ElementRef<HTMLDivElement>;
@@ -39,10 +56,6 @@ export class HomeComponent implements OnInit {
   overlay = false;
   searchKey: string = '';
   task!: Task;
-
-  toDos!: Task[];
-  doings!:  Task[];
-  dones!:  Task[];
   tasksCount: number = 0;
   fill = false;
 
@@ -65,13 +78,12 @@ export class HomeComponent implements OnInit {
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
-        event.currentIndex,
+        0,
       );
-
-        this.taskService.updateTaskStatus({
+      this.taskService.updateTaskStatus({
           taskId: event.container.data[event.currentIndex].id, targetStatusIndex: target
         }).subscribe((response => {
-          this.getTasks();
+          if (response) this.sets[target].splice(event.currentIndex, 1, response);
         }));
       
     }
@@ -80,29 +92,13 @@ export class HomeComponent implements OnInit {
   email: string | null = localStorage.getItem('email');
 
   addTask($event: Task) {
-    this.toDos.unshift($event);
+    this.sets[0].unshift($event);
     this.fill = false;
   }
 
   editTask($event: Task, status: number) {
-    let index: any;
-    console.log(status)
-    switch (status) {
-      case 0:
-        index = this.toDos.find(t => t.id === $event.id);
-        this.toDos.splice(index, 1, $event);
-        break;
-      case 1: 
-        index = this.doings.findIndex(t => t.id === $event.id);
-        this.doings.splice(index, 1, $event);
-        break;
-      case 2:
-        index = this.dones.findIndex(t => t.id === $event.id);
-        this.dones.splice(index, 1, $event);
-        break;
-      default:
-        break;
-    }
+    let index = this.sets[status].findIndex(t => t.id === $event.id);
+    this.sets[status].splice(index, 1, $event);
   }
 
 }
