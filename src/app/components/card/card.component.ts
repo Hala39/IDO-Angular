@@ -20,18 +20,22 @@ export class CardComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     let task = changes['task']?.currentValue;
     this.addForm = new FormGroup({
-      category: new FormControl(task ? task.category : null),
-      title: new FormControl(task ? task.title : null, Validators.required),
+      category: new FormControl(task ? task.category : null, Validators.maxLength(50)),
+      title: new FormControl(task ? task.title : null, [Validators.required, Validators.maxLength(500)]),
       dueDate: new FormControl(task ? this.datePipe.transform(task.dueDate, 'yyyy-MM-dd') : null),
       estimatedTime: new FormControl(task ? task.estimatedTime : 1),
-      estimationUnit: new FormControl(task ? task.estimationUnit : 'hour'),
+      estimationUnit: new FormControl(task ? task.estimationUnit : 'hour', Validators.maxLength(20)),
       importance: new FormControl(task? task.importance : 0),
       status: new FormControl(task? task.status : 0)
     });
-    if (task) this.id.patchValue(task.id);
+    if (task) this.id.patchValue(task.id); 
   }
 
   ngOnInit(): void {
+    this.addForm.controls['estimatedTime'].valueChanges.subscribe(value => {
+      if (value < 0)
+        this.addForm.get('estimatedTime')?.patchValue(1)
+    })
   }
 
   resize($event: any) {

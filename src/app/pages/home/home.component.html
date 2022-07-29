@@ -74,9 +74,9 @@
 </div>
 <div class="container content">
     <div class="grid">
-        <div class="card action" *ngFor="let status of status">
+        <div class="card action" *ngFor="let status of status; let first = first">
             <img src="assets/images/{{status}}Icon.svg" alt="">
-            <h2>{{status}}</h2>
+            <h2>{{first ? 'To Do' : status}}</h2>
         </div>
         <div 
             *ngIf="!showQuote"
