@@ -15,13 +15,7 @@ export class HomeComponent implements OnInit {
     this.getTasks();
   }
 
-  status = {
-    TODO: 0,
-    DOING: 1,
-    DONE: 2
-
-  };
-
+  status = ["ToDo", "Doing", "Done"]
 
   getTasks() {
     this.taskService.getTasks().subscribe((response: any) => {
@@ -38,7 +32,6 @@ export class HomeComponent implements OnInit {
   sets: Task[][] = [];
 
   @ViewChild('searchBoxRef') searchBoxRef!: ElementRef<HTMLDivElement>;
-  @ViewChild('searchIconRef') searchIconRef!: ElementRef<HTMLDivElement>;
 
   @ViewChild('quoteRef') quoteRef!: ElementRef<HTMLDivElement>;
   @ViewChild('removeIconRef') removeIconRef!: ElementRef<HTMLImageElement>;
@@ -47,25 +40,20 @@ export class HomeComponent implements OnInit {
 
   overlay = false;
   searchKey: string = '';
-  task!: Task;
   tasksCount: number = 0;
   fill = false;
-
-  logout() {
-    this.authService.logout();
-  }
+  showQuote = true;
+  focusedItemId: number | null = null;
 
   @HostListener('document:mouseover', ['$event']) 
-  hideSearchBox($event: any) {
-    if (!this.quoteRef.nativeElement.contains($event.target)) {
+  hideQuoteRemover($event: any) {
+    if (this.showQuote && !this.quoteRef.nativeElement.contains($event.target)) {
       this.removeIconRef.nativeElement.style.display = 'none';
     }
   }
 
   drop(event: CdkDragDrop<Task[]>, target: number) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
+    if (event.previousContainer !== event.container) {
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -73,15 +61,14 @@ export class HomeComponent implements OnInit {
         0,
       );
       this.taskService.updateTaskStatus({
-          taskId: event.container.data[event.currentIndex].id, targetStatusIndex: target
+          taskId: event.container.data[0].id, targetStatusIndex: target
         }).subscribe((response => {
-          if (response) this.sets[target].splice(event.currentIndex, 1, response);
-        }));
+          console.log(event.container.data[0].title)
+          if (response) this.sets[target].splice(0, 1, response);
+      }));
       
     }
   }
-
-  email: string | null = localStorage.getItem('email');
 
   addTask($event: Task) {
     this.sets[0].unshift($event);
@@ -89,8 +76,14 @@ export class HomeComponent implements OnInit {
   }
 
   editTask($event: Task, status: number) {
-    let index = this.sets[status].findIndex(t => t.id === $event.id);
-    this.sets[status].splice(index, 1, $event);
+    if ($event) {
+      let index = this.sets[status].findIndex(t => t.id === $event.id);
+      this.sets[status].splice(index, 1, $event);
+    } 
   }
 
+  email: string | null = localStorage.getItem('email');
+  logout() {
+    this.authService.logout();
+  }
 }

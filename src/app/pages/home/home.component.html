@@ -21,7 +21,7 @@
             tooltip="Add item"
             class="svg" 
             style="position: relative;" 
-            (click)="fill = true"
+            (click)="fill = true;"
         >
             <img src="assets/images/Circle.svg" alt="" class="circle">
             <img src="assets/images/Add.svg" alt="" class="plus">
@@ -58,6 +58,7 @@
     </div>
 </div> 
 <div 
+    *ngIf="showQuote"
     #quoteRef
     class="container quote" 
     (mouseover)="removeIconRef.style.display = 'block'"
@@ -68,31 +69,26 @@
         src="assets/images/RemoveQuote.svg" 
         alt="" 
         height="15"
-        (click)="quoteRef.style.display = 'none'"
+        (click)="showQuote = false"
     >
 </div>
-
-
 <div class="container content">
     <div class="grid">
-        <div class="card action">
-            <img src="assets/images/ToDoIcon.svg" alt="">
-            <h2>To Do</h2>
+        <div class="card action" *ngFor="let status of status">
+            <img src="assets/images/{{status}}Icon.svg" alt="">
+            <h2>{{status}}</h2>
         </div>
-        <div class="card action">
-            <img src="assets/images/DoingIcon.svg" alt="">
-            <h2>Doing</h2>
-        </div>
-        <div class="card action">
-            <img src="assets/images/DoneIcon.svg" alt="">
-            <h2>Done</h2>
-        </div>
-        <div class="action"
-            *ngIf="quoteRef.style.display === 'none'"
-            style="display: inline-flex; justify-content: flex-end; width: 100%;"
-            (click)="quoteRef.style.display = 'flex'"
+        <div 
+            *ngIf="!showQuote"
+            class="action info"
         >
-            <img src="assets/images/ShowQuoteIcon.svg" alt="" height="20" style="cursor: pointer;">
+            <img 
+                src="assets/images/ShowQuoteIcon.svg" 
+                alt="" 
+                height="20" 
+                style="cursor: pointer;" 
+                (click)="showQuote = true"
+            >
         </div>
     </div>
     
@@ -100,28 +96,42 @@
         Your list is empty! Try adding new Tasks and make sure the server is running.
     </div>
     <div class="grid" cdkDropListGroup>
-        <div *ngFor="let status of status | keyvalue; let i = index">
+        <div *ngFor="let status of status; let i = index">
             <div 
                 class="list"
                 [id]="i.toString()"
                 cdkDropList 
+                cdkDropListSortingDisabled
                 (cdkDropListDropped)="drop($event, i)"
                 [cdkDropListData]="sets[i]"
             >
                 <app-card 
                     *ngIf="fill && i === 0" 
                     [add]="true" 
+                    (onFocus)="fill = false"
                     (onItemChanged)="addTask($event)" 
                     [editMode]="fill"
                 >
                 </app-card>
-                <app-card 
-                    *ngFor="let task of sets[i]"
-                    cdkDrag
-                    [task]="task" 
-                    (onItemChanged)="editTask($event, task.status)" 
-                    [keyword]="searchKey"
-                ></app-card>
+                <ng-container *ngFor="let task of sets[i]">
+                    <app-card 
+                        *ngIf="focusedItemId === task.id"
+                        cdkDrag
+                        (onItemChanged)="editTask($event, task.status)" 
+                        [keyword]="searchKey"
+                        (onFocus)="focusedItemId = $event"
+                        [editMode]="true"
+                        [task]="task" 
+                    ></app-card>
+                    <app-card 
+                        *ngIf="focusedItemId !== task.id"
+                        cdkDrag
+                        (onItemChanged)="editTask($event, task.status)" 
+                        [keyword]="searchKey"
+                        (onFocus)="focusedItemId = $event"
+                        [task]="task" 
+                    ></app-card>
+                </ng-container>
             </div>
         </div>
     </div>

@@ -86,7 +86,7 @@ export class CardComponent implements OnInit, OnChanges {
 
   editModeOn() {
     this.editMode = true;
-    this.onFocus.emit(this.task)
+    this.onFocus.emit(this.task.id)
   }
 
   @HostListener('document:click', ['$event'])
@@ -95,7 +95,15 @@ export class CardComponent implements OnInit, OnChanges {
       && !this.addCardRef?.nativeElement.contains($event.target) 
       && this.addForm.dirty) {
         this.changeTask();
-      }
+    }
+  }
+
+  @HostListener('document:contextmenu', ['$event'])
+  blurOnRightClick($event: any) {
+    if (this.editMode && !this.addCardRef?.nativeElement.contains($event.target) 
+    && !this.addForm.dirty) {
+      this.onFocus.emit(null);
+    }
   }
   
   @HostListener('document:keydown.enter', ['$event'])
