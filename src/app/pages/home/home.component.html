@@ -99,85 +99,30 @@
     <div *ngIf="tasksCount === 0" class="feedback">
         Your list is empty! Try adding new Tasks and make sure the server is running.
     </div>
-    <div class="grid">
-        <div 
-            class="list"
-            #toDosRef="cdkDropList"
-            cdkDropList 
-            (cdkDropListDropped)="drop($event, 0)"
-            [cdkDropListData]="toDos"
-            [cdkDropListConnectedTo]="[doingsRef, donesRef]"
-        >
-            <app-card 
-                *ngIf="fill" 
-                [add]="true" 
-                (onItemChanged)="addTask($event)" 
-                [editMode]="fill"
+    <div class="grid" cdkDropListGroup>
+        <div *ngFor="let status of status | keyvalue; let i = index">
+            <div 
+                class="list"
+                [id]="i.toString()"
+                cdkDropList 
+                (cdkDropListDropped)="drop($event, i)"
+                [cdkDropListData]="sets[i]"
             >
-            </app-card>
-            <ng-container *ngFor="let task of toDos">
                 <app-card 
-                    *ngIf="focusedTask !== task"
+                    *ngIf="fill && i === 0" 
+                    [add]="true" 
+                    (onItemChanged)="addTask($event)" 
+                    [editMode]="fill"
+                >
+                </app-card>
+                <app-card 
+                    *ngFor="let task of sets[i]"
                     cdkDrag
                     [task]="task" 
                     (onItemChanged)="editTask($event, task.status)" 
                     [keyword]="searchKey"
-                    (onFocus)="focusedTask = task"
                 ></app-card>
-                <app-card 
-                    *ngIf="focusedTask === task"
-                    cdkDrag
-                    [editMode]="true"
-                    [task]="task" 
-                    (onItemChanged)="editTask($event, task.status)" 
-                    [keyword]="searchKey"
-                ></app-card>
-            </ng-container>
-            
+            </div>
         </div>
-        <div  
-            class="list"
-            #doingsRef="cdkDropList"
-            cdkDropList 
-            (cdkDropListDropped)="drop($event, 1)"
-            [cdkDropListData]="doings"
-            [cdkDropListConnectedTo]="[toDosRef, donesRef]"
-        >
-        <ng-container *ngFor="let task of doings">
-            <app-card 
-                *ngIf="focusedTask !== task"
-                cdkDrag
-                [task]="task" 
-                (onItemChanged)="editTask($event, task.status)" 
-                [keyword]="searchKey"
-                (onFocus)="focusedTask = task"
-            ></app-card>
-            <app-card 
-                *ngIf="focusedTask === task"
-                cdkDrag
-                [editMode]="true"
-                [task]="task" 
-                (onItemChanged)="editTask($event, task.status)" 
-                [keyword]="searchKey"
-            ></app-card>
-        </ng-container>
-        </div>
-        <div 
-            class="list"
-            #donesRef="cdkDropList"
-            cdkDropList 
-            (cdkDropListDropped)="drop($event, 2)"
-            [cdkDropListData]="dones"
-            [cdkDropListConnectedTo]="[toDosRef, doingsRef]"
-        >
-            <app-card 
-                *ngFor="let task of dones"
-                cdkDrag
-                (onItemChanged)="editTask($event, task.status)"
-                [keyword]="searchKey"
-                [task]="task" 
-            ></app-card>
-        </div>
-        <div></div>
     </div>
 </div>

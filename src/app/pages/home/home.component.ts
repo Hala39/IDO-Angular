@@ -15,17 +15,27 @@ export class HomeComponent implements OnInit {
     this.getTasks();
   }
 
+  status = {
+    TODO: 0,
+    DOING: 1,
+    DONE: 2
+
+  };
+
+
   getTasks() {
     this.taskService.getTasks().subscribe((response: any) => {
-      this.toDos = response.filter((t: any) => t.status === 0);
-      this.doings = response.filter((t: any) => t.status === 1);
-      this.dones = response.filter((t: any) => t.status === 2);
+      this.sets.push(response.filter((t: any) => t.status === 0));
+      this.sets.push(response.filter((t: any) => t.status === 1));
+      this.sets.push(response.filter((t: any) => t.status === 2));
       this.tasksCount = response.length;
     });
   }
 
   ngOnInit(): void {
   }
+
+  sets: Task[][] = [];
 
   @ViewChild('searchBoxRef') searchBoxRef!: ElementRef<HTMLDivElement>;
   @ViewChild('searchIconRef') searchIconRef!: ElementRef<HTMLDivElement>;
@@ -37,10 +47,7 @@ export class HomeComponent implements OnInit {
 
   overlay = false;
   searchKey: string = '';
-
-  toDos!: Task[];
-  doings!:  Task[];
-  dones!:  Task[];
+  task!: Task;
   tasksCount: number = 0;
   fill = false;
 
@@ -63,13 +70,12 @@ export class HomeComponent implements OnInit {
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
-        event.currentIndex,
+        0,
       );
-
-        this.taskService.updateTaskStatus({
+      this.taskService.updateTaskStatus({
           taskId: event.container.data[event.currentIndex].id, targetStatusIndex: target
         }).subscribe((response => {
-          this.getTasks();
+          if (response) this.sets[target].splice(event.currentIndex, 1, response);
         }));
       
     }
@@ -78,30 +84,13 @@ export class HomeComponent implements OnInit {
   email: string | null = localStorage.getItem('email');
 
   addTask($event: Task) {
-    this.toDos.unshift($event);
+    this.sets[0].unshift($event);
     this.fill = false;
   }
 
-  focusedTask!: Task;
-
   editTask($event: Task, status: number) {
-    let index: any;
-    switch (status) {
-      case 0:
-        index = this.toDos.findIndex(t => t.id === $event.id);
-        this.toDos.splice(index, 1, $event);
-        break;
-      case 1: 
-        index = this.doings.findIndex(t => t.id === $event.id);
-        this.doings.splice(index, 1, $event);
-        break;
-      case 2:
-        index = this.dones.findIndex(t => t.id === $event.id);
-        this.dones.splice(index, 1, $event);
-        break;
-      default:
-        break;
-    }
+    let index = this.sets[status].findIndex(t => t.id === $event.id);
+    this.sets[status].splice(index, 1, $event);
   }
 
 }
