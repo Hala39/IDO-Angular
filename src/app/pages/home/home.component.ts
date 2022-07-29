@@ -1,4 +1,4 @@
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Task } from 'src/app/entities/task';
 import { AuthService } from 'src/app/services/auth.service';
@@ -44,13 +44,7 @@ export class HomeComponent implements OnInit {
   fill = false;
   showQuote = true;
   focusedItemId: number | null = null;
-
-  @HostListener('document:mouseover', ['$event']) 
-  hideQuoteRemover($event: any) {
-    if (this.showQuote && !this.quoteRef.nativeElement.contains($event.target)) {
-      this.removeIconRef.nativeElement.style.display = 'none';
-    }
-  }
+  email: string | null = localStorage.getItem('email');
 
   drop(event: CdkDragDrop<Task[]>, target: number) {
     if (event.previousContainer !== event.container) {
@@ -82,8 +76,15 @@ export class HomeComponent implements OnInit {
     } 
   }
 
-  email: string | null = localStorage.getItem('email');
   logout() {
     this.authService.logout();
   }
+
+  @HostListener('document:mouseover', ['$event']) 
+  hideQuoteRemover($event: any) {
+    if (this.showQuote && !this.quoteRef.nativeElement.contains($event.target)) {
+      this.removeIconRef.nativeElement.style.display = 'none';
+    }
+  }
+
 }

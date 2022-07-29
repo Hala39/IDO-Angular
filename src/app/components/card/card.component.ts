@@ -1,27 +1,41 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { 
+  Component, 
+  ElementRef, 
+  EventEmitter, 
+  HostListener, 
+  Input, 
+  OnChanges, 
+  OnInit, 
+  Output, 
+  SimpleChanges, 
+  ViewChild
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Importance } from 'src/app/entities/importance';
 import { Task } from 'src/app/entities/task';
+import { MaxLengthPipe } from 'src/app/helpers/maxlength.pipe';
 import { TaskService } from 'src/app/services/task.service';
 
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
-  providers: [DatePipe],
-  host: {'(blur)': 'onBlur($event)'}
+  providers: [DatePipe, MaxLengthPipe]
 })
 export class CardComponent implements OnInit, OnChanges {
 
-  constructor(private datePipe: DatePipe, private taskService: TaskService) { 
+  constructor(
+    private datePipe: DatePipe,
+    private maxLengthPipe: MaxLengthPipe, 
+    private taskService: TaskService) { 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     let task = changes['task']?.currentValue;
     this.addForm = new FormGroup({
-      category: new FormControl(task ? task.category : null, Validators.maxLength(50)),
       title: new FormControl(task ? task.title : null, [Validators.required, Validators.maxLength(500)]),
+      category: new FormControl(task ? task.category : null, Validators.maxLength(50)),
       dueDate: new FormControl(task ? this.datePipe.transform(task.dueDate, 'yyyy-MM-dd') : null),
       estimatedTime: new FormControl(task ? task.estimatedTime : 1),
       estimationUnit: new FormControl(task ? task.estimationUnit : 'hour', Validators.maxLength(20)),
@@ -36,12 +50,22 @@ export class CardComponent implements OnInit, OnChanges {
       if (value < 0)
         this.addForm.get('estimatedTime')?.patchValue(1)
     })
+    this.addForm.controls['title'].valueChanges.subscribe(value => {
+      this.addForm.get('title')?.patchValue(this.maxLengthPipe.transform(value, 500))
+    })
+    this.addForm.controls['category'].valueChanges.subscribe(value => {
+      this.addForm.get('category')?.patchValue(this.maxLengthPipe.transform(value, 50))
+    })
+    this.addForm.controls['estimationUnit'].valueChanges.subscribe(value => {
+      this.addForm.get('estimationUnit')?.patchValue(this.maxLengthPipe.transform(value, 20))
+    })
   }
 
   resize($event: any) {
     this.textareaRef.nativeElement.style.height = 'auto';
     this.textareaRef.nativeElement.style.height = $event.target.scrollHeight + 'px';
   }
+  id = new FormControl();
 
   @Input('keyword') keyword: string = '';
   @Input('task') task!: Task;
@@ -63,10 +87,8 @@ export class CardComponent implements OnInit, OnChanges {
     return keys.slice(keys.length / 2);
   }
 
-  id = new FormControl();
-
   changeTask() {
-    if (this.addForm.get('title')?.valid) {
+    if (this.addForm.valid) {
       let importance = +this.addForm.get('importance')?.value;
       this.addForm.get('importance')?.patchValue(importance);
       
