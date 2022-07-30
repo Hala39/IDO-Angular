@@ -84,16 +84,20 @@ export class CardComponent implements OnInit, OnChanges {
       
       if (this.add) 
         this.taskService.addTask(this.addForm.value).subscribe(response => {
-          this.onItemChanged.emit(response);
-          this.editMode = false;
+          if (response) {
+            this.onItemChanged.emit(response);
+            this.editMode = false;
+          }
       });
 
       else {
         this.addForm.addControl('id', this.id);
         this.addForm.get('dueDate')?.patchValue(this.task.dueDate)
         this.taskService.updateTaskTitle(this.addForm.value).subscribe(response => {
-          this.editMode = false;
-          this.onItemChanged.emit(response);
+          if (response) {
+            this.editMode = false;
+            this.onItemChanged.emit(response);
+          }
         })
       }
       
