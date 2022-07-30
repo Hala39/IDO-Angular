@@ -14,7 +14,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { HighlighterPipe } from './helpers/highlighter.pipe';
 import { AuthGuard } from './services/auth.guard';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { MaxLengthPipe } from './helpers/maxlength.pipe';
 
 @NgModule({
   declarations: [
@@ -24,7 +23,6 @@ import { MaxLengthPipe } from './helpers/maxlength.pipe';
     CardComponent,
     TooltipDirective,
     HighlighterPipe,
-    MaxLengthPipe
   ],
   imports: [
     BrowserModule,

@@ -70,10 +70,9 @@ export class HomeComponent implements OnInit {
   }
 
   editTask($event: Task, status: number) {
-    if ($event) {
       let index = this.sets[status].findIndex(t => t.id === $event.id);
       this.sets[status].splice(index, 1, $event);
-    } 
+      this.focusedItemId = null;
   }
 
   logout() {

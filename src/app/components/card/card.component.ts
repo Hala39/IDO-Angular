@@ -14,20 +14,18 @@ import {
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Importance } from 'src/app/entities/importance';
 import { Task } from 'src/app/entities/task';
-import { MaxLengthPipe } from 'src/app/helpers/maxlength.pipe';
 import { TaskService } from 'src/app/services/task.service';
 
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
-  providers: [DatePipe, MaxLengthPipe]
+  providers: [DatePipe]
 })
 export class CardComponent implements OnInit, OnChanges {
 
   constructor(
     private datePipe: DatePipe,
-    private maxLengthPipe: MaxLengthPipe, 
     private taskService: TaskService) { 
   }
 
@@ -50,21 +48,13 @@ export class CardComponent implements OnInit, OnChanges {
       if (value < 0)
         this.addForm.get('estimatedTime')?.patchValue(1)
     })
-    this.addForm.controls['title'].valueChanges.subscribe(value => {
-      this.addForm.get('title')?.patchValue(this.maxLengthPipe.transform(value, 500))
-    })
-    this.addForm.controls['category'].valueChanges.subscribe(value => {
-      this.addForm.get('category')?.patchValue(this.maxLengthPipe.transform(value, 50))
-    })
-    this.addForm.controls['estimationUnit'].valueChanges.subscribe(value => {
-      this.addForm.get('estimationUnit')?.patchValue(this.maxLengthPipe.transform(value, 20))
-    })
   }
 
   resize($event: any) {
     this.textareaRef.nativeElement.style.height = 'auto';
     this.textareaRef.nativeElement.style.height = $event.target.scrollHeight + 'px';
   }
+
   id = new FormControl();
 
   @Input('keyword') keyword: string = '';
@@ -121,14 +111,6 @@ export class CardComponent implements OnInit, OnChanges {
       && !this.addCardRef?.nativeElement.contains($event.target) 
       && this.addForm.dirty) {
         this.changeTask();
-    }
-  }
-
-  @HostListener('document:contextmenu', ['$event'])
-  blurOnRightClick($event: any) {
-    if (this.editMode && !this.addCardRef?.nativeElement.contains($event.target) 
-    && !this.addForm.dirty) {
-      this.onFocus.emit(null);
     }
   }
   
